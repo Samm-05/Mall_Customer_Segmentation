@@ -494,7 +494,7 @@ This project demonstrates:
 
 **Samyak Prashant Mahatme**
 
-Machine Learning Intern | MERN Stack Developer | AI/ML Enthusiast
+Machine Learning Intern | MERN Stack Developer 
 
 ---
 
