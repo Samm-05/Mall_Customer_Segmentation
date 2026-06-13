@@ -1,53 +1,31 @@
 import joblib
-import os
 
-from sklearn.cluster import KMeans
+from config.settings import (
+    MODELS_DIR
+)
 
 from src.preprocess import preprocess_data
-from src.utils import generate_elbow_curve
+
+from src.clustering import (
+    train_kmeans
+)
 
 
 def train_model():
 
-    df, X_scaled = preprocess_data(
-        "data/Mall_Customers.csv"
-    )
+    df, X = preprocess_data()
 
-    generate_elbow_curve(
-        X_scaled
-    )
+    model, labels = train_kmeans(X)
 
-    model = KMeans(
-        n_clusters=5,
-        random_state=42,
-        n_init=10
-    )
+    df["Cluster"] = labels
 
-    clusters = model.fit_predict(
-        X_scaled
-    )
-
-    df["Cluster"] = clusters
-
-    os.makedirs(
-        "models",
+    MODELS_DIR.mkdir(
         exist_ok=True
     )
 
     joblib.dump(
         model,
-        "models/kmeans.pkl"
+        MODELS_DIR / "kmeans.pkl"
     )
 
-    df.to_csv(
-        "outputs/customer_segments.csv",
-        index=False
-    )
-
-    print(
-        "Training Complete"
-    )
-
-
-if __name__ == "__main__":
-    train_model()
+    return df, X, labels
