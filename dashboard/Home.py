@@ -23,17 +23,20 @@ from src.services.analytics_service import (
     get_clustered_data
 )
 
+from src.auth_guard import (
+    protect_page,
+    render_user_panel
+)
+
+protect_page()
+
+render_user_panel()
+
 st.set_page_config(
     page_title="Mall Customer Analytics",
     page_icon="📊",
     layout="wide"
 )
-
-from src.auth_guard import (
-    protect_page
-)
-
-protect_page()
 
 load_css()
 

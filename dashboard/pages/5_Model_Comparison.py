@@ -1,5 +1,14 @@
 import streamlit as st
 
+from src.auth_guard import (
+    protect_page,
+    render_user_panel
+)
+
+protect_page()
+
+render_user_panel()
+
 from src.preprocess import (
     preprocess_data
 )
@@ -13,12 +22,6 @@ from src.clustering import (
 from src.metrics import (
     evaluate_model
 )
-
-from src.auth_guard import (
-    protect_page
-)
-
-protect_page()
 
 st.title(
     "Model Comparison"

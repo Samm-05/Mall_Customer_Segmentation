@@ -27,10 +27,13 @@ from src.executive_insights import (
 )
 
 from src.auth_guard import (
-    protect_page
+    protect_page,
+    render_user_panel
 )
 
 protect_page()
+
+render_user_panel()
 
 st.title(
     "Executive BI Dashboard"

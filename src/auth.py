@@ -1,17 +1,21 @@
 import streamlit as st
 
-# Demo Users
 USERS = {
     "admin": {
         "password": "admin123",
         "role": "Admin"
     },
+
+    "manager": {
+        "password": "manager123",
+        "role": "Manager"
+    },
+
     "user": {
         "password": "user123",
         "role": "User"
     }
 }
-
 
 def initialize_auth():
 

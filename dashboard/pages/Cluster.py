@@ -8,10 +8,13 @@ st.title(
 )
 
 from src.auth_guard import (
-    protect_page
+    protect_page,
+    render_user_panel
 )
 
 protect_page()
+
+render_user_panel()
 
 from src.services.analytics_service import (
     get_clustered_data

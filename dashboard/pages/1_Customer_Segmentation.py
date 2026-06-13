@@ -1,3 +1,12 @@
+from src.auth_guard import (
+    protect_page,
+    render_user_panel
+)
+
+protect_page()
+
+render_user_panel()
+
 import sys
 from pathlib import Path
 
@@ -23,12 +32,6 @@ from src.visualizer import (
     create_pca_dataframe,
     pca_plot
 )
-
-from src.auth_guard import (
-    protect_page
-)
-
-protect_page()
 
 st.title(
     "Customer Segmentation"

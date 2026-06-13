@@ -1,6 +1,15 @@
 import sys
 from pathlib import Path
 
+from src.auth_guard import (
+    protect_page,
+    render_user_panel
+)
+
+protect_page()
+
+render_user_panel()
+
 ROOT_DIR = (
     Path(__file__)
     .resolve()
@@ -23,12 +32,6 @@ from src.recommender import (
     get_cluster_name,
     get_recommendation
 )
-
-from src.auth_guard import (
-    protect_page
-)
-
-protect_page()
 
 st.title(
     "Customer Segment Predictor"
