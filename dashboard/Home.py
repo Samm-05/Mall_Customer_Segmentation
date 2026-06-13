@@ -15,6 +15,10 @@ from src.theme import (
     page_header
 )
 
+from src.filter_service import (
+    apply_filters
+)
+
 from src.services.analytics_service import (
     get_clustered_data
 )
@@ -31,11 +35,108 @@ df, X, labels = get_clustered_data()
 
 page_header()
 
-st.markdown("---")
+# ==================================
+# SIDEBAR FILTERS
+# ==================================
 
-# ======================
+st.sidebar.header(
+    "Dashboard Filters"
+)
+
+age_range = st.sidebar.slider(
+    "Age Range",
+    int(df["Age"].min()),
+    int(df["Age"].max()),
+    (
+        int(df["Age"].min()),
+        int(df["Age"].max())
+    )
+)
+
+income_range = st.sidebar.slider(
+    "Income Range",
+    int(
+        df["Annual Income (k$)"]
+        .min()
+    ),
+    int(
+        df["Annual Income (k$)"]
+        .max()
+    ),
+    (
+        int(
+            df["Annual Income (k$)"]
+            .min()
+        ),
+        int(
+            df["Annual Income (k$)"]
+            .max()
+        )
+    )
+)
+
+spending_range = st.sidebar.slider(
+    "Spending Score",
+    int(
+        df[
+            "Spending Score (1-100)"
+        ].min()
+    ),
+    int(
+        df[
+            "Spending Score (1-100)"
+        ].max()
+    ),
+    (
+        int(
+            df[
+                "Spending Score (1-100)"
+            ].min()
+        ),
+        int(
+            df[
+                "Spending Score (1-100)"
+            ].max()
+        )
+    )
+)
+
+gender_filter = st.sidebar.multiselect(
+    "Gender",
+    options=df["Gender"]
+    .unique()
+    .tolist(),
+    default=df["Gender"]
+    .unique()
+    .tolist()
+)
+
+cluster_filter = st.sidebar.multiselect(
+    "Cluster",
+    options=sorted(
+        df["Cluster"]
+        .unique()
+        .tolist()
+    ),
+    default=sorted(
+        df["Cluster"]
+        .unique()
+        .tolist()
+    )
+)
+
+filtered_df = apply_filters(
+    df,
+    age_range,
+    income_range,
+    spending_range,
+    gender_filter,
+    cluster_filter
+)
+
+# ==================================
 # KPI SECTION
-# ======================
+# ==================================
 
 c1, c2, c3, c4 = st.columns(4)
 
@@ -43,7 +144,7 @@ with c1:
 
     render_kpi(
         "Customers",
-        len(df)
+        len(filtered_df)
     )
 
 with c2:
@@ -51,7 +152,7 @@ with c2:
     render_kpi(
         "Avg Income",
         round(
-            df[
+            filtered_df[
                 "Annual Income (k$)"
             ].mean(),
             2
@@ -63,7 +164,7 @@ with c3:
     render_kpi(
         "Avg Spending",
         round(
-            df[
+            filtered_df[
                 "Spending Score (1-100)"
             ].mean(),
             2
@@ -75,32 +176,22 @@ with c4:
     render_kpi(
         "Segments",
         len(
-            df["Cluster"]
-            .unique()
+            filtered_df[
+                "Cluster"
+            ].unique()
         )
     )
 
 st.markdown("---")
 
-# ======================
-# CHARTS
-# ======================
-
 left, right = st.columns(2)
 
 with left:
 
-    st.markdown(
-        """
-        <div class="section-title">
-            Segment Distribution
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
     segment_df = (
-        df["Cluster"]
+        filtered_df[
+            "Cluster"
+        ]
         .value_counts()
         .reset_index()
     )
@@ -110,7 +201,7 @@ with left:
         "Customers"
     ]
 
-    fig = px.pie(
+    pie_fig = px.pie(
         segment_df,
         names="Cluster",
         values="Customers",
@@ -118,46 +209,31 @@ with left:
     )
 
     st.plotly_chart(
-        fig,
+        pie_fig,
         use_container_width=True
     )
 
 with right:
 
-    st.markdown(
-        """
-        <div class="section-title">
-            Income vs Spending
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    scatter = px.scatter(
-        df,
+    scatter_fig = px.scatter(
+        filtered_df,
         x="Annual Income (k$)",
         y="Spending Score (1-100)",
-        color=df["Cluster"].astype(str)
+        color=filtered_df[
+            "Cluster"
+        ].astype(str),
+        hover_data=["Age"]
     )
 
     st.plotly_chart(
-        scatter,
+        scatter_fig,
         use_container_width=True
     )
 
 st.markdown("---")
 
-st.markdown(
-    """
-    <div class="section-title">
-        Customer Age Distribution
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
 hist = px.histogram(
-    df,
+    filtered_df,
     x="Age",
     nbins=20
 )
@@ -169,24 +245,7 @@ st.plotly_chart(
 
 st.markdown("---")
 
-st.markdown(
-    """
-    <div class="section-title">
-        Dataset Preview
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
 st.dataframe(
-    df.head(20),
+    filtered_df,
     use_container_width=True
-)
-
-st.sidebar.title(
-    "Navigation"
-)
-
-st.sidebar.success(
-    "Select a page from sidebar."
 )
