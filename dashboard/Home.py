@@ -3,22 +3,27 @@ from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 
-sys.path.append(str(ROOT_DIR))
+sys.path.append(
+    str(ROOT_DIR)
+)
 
 import streamlit as st
 import plotly.express as px
 
-from src.train import train_model
 from src.ui import load_css
+
+from src.services.analytics_service import (
+    get_clustered_data
+)
+
+load_css()
 
 st.set_page_config(
     page_title="Mall Customer Analytics",
     layout="wide"
 )
 
-load_css()
-
-df, X, labels = train_model()
+df, X, labels = get_clustered_data()
 
 st.markdown(
     """
@@ -34,12 +39,14 @@ st.markdown("---")
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
+
     st.metric(
         "Customers",
         len(df)
     )
 
 with col2:
+
     st.metric(
         "Average Income",
         round(
@@ -51,6 +58,7 @@ with col2:
     )
 
 with col3:
+
     st.metric(
         "Average Spending",
         round(
@@ -62,6 +70,7 @@ with col3:
     )
 
 with col4:
+
     st.metric(
         "Segments",
         len(
@@ -72,51 +81,59 @@ with col4:
 
 st.markdown("---")
 
-st.markdown(
-    """
-    <div class="section-title">
-        Customer Segment Distribution
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+left, right = st.columns(2)
 
-cluster_df = (
-    df["Cluster"]
-    .value_counts()
-    .reset_index()
-)
+with left:
 
-cluster_df.columns = [
-    "Cluster",
-    "Customers"
-]
+    cluster_df = (
+        df["Cluster"]
+        .value_counts()
+        .reset_index()
+    )
 
-fig = px.pie(
-    cluster_df,
-    names="Cluster",
-    values="Customers",
-    hole=0.45,
-    title="Customer Segments"
-)
+    cluster_df.columns = [
+        "Cluster",
+        "Customers"
+    ]
 
-st.plotly_chart(
-    fig,
-    use_container_width=True
-)
+    pie_fig = px.pie(
+        cluster_df,
+        names="Cluster",
+        values="Customers",
+        hole=0.5,
+        title="Customer Segments"
+    )
+
+    st.plotly_chart(
+        pie_fig,
+        use_container_width=True
+    )
+
+with right:
+
+    scatter_fig = px.scatter(
+        df,
+        x="Annual Income (k$)",
+        y="Spending Score (1-100)",
+        color=df["Cluster"].astype(str),
+        title="Income vs Spending"
+    )
+
+    st.plotly_chart(
+        scatter_fig,
+        use_container_width=True
+    )
 
 st.markdown("---")
 
-st.markdown(
-    """
-    <div class="section-title">
-        Quick Overview
-    </div>
-    """,
-    unsafe_allow_html=True
+hist_fig = px.histogram(
+    df,
+    x="Age",
+    nbins=20,
+    title="Age Distribution"
 )
 
-st.dataframe(
-    df.head(20),
+st.plotly_chart(
+    hist_fig,
     use_container_width=True
 )
