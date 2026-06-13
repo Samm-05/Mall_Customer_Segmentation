@@ -16,3 +16,5 @@ joblib==1.4.2
 kaleido==0.2.1
 
 openpyxl
+
+reportlab
