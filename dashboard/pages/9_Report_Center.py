@@ -2,11 +2,8 @@ import sys
 from pathlib import Path
 
 ROOT_DIR = (
-    Path(__file__)
-    .resolve()
-    .parent
-    .parent
-    .parent
+    Path(__file__).resolve()
+    .parent.parent.parent
 )
 
 sys.path.append(
@@ -14,15 +11,15 @@ sys.path.append(
 )
 
 import streamlit as st
-
-from src.train import train_model
-
-st.title(
-    "Report Center"
-)
+import pandas as pd
+from io import BytesIO
 
 from src.services.analytics_service import (
     get_clustered_data
+)
+
+st.title(
+    "Report Center"
 )
 
 df, X, labels = get_clustered_data()
@@ -32,12 +29,30 @@ csv = df.to_csv(
 )
 
 st.download_button(
-    label="Download Customer Segments CSV",
-    data=csv,
-    file_name="customer_segments.csv",
-    mime="text/csv"
+    "Download CSV",
+    csv,
+    "customer_segments.csv",
+    "text/csv"
+)
+
+buffer = BytesIO()
+
+with pd.ExcelWriter(
+    buffer,
+    engine="openpyxl"
+) as writer:
+
+    df.to_excel(
+        writer,
+        index=False
+    )
+
+st.download_button(
+    "Download Excel",
+    buffer.getvalue(),
+    "customer_segments.xlsx"
 )
 
 st.dataframe(
-    df.head(20)
+    df.head(25)
 )
