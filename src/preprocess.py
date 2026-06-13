@@ -1,35 +1,48 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import joblib
-import os
+
+from config.settings import (
+    DATA_PATH,
+    MODELS_DIR
+)
 
 
-def preprocess_data(csv_path):
+def load_data():
 
-    df = pd.read_csv(csv_path)
+    df = pd.read_csv(DATA_PATH)
 
-    df["Gender"] = df["Gender"].map({
-        "Male": 1,
-        "Female": 0
-    })
+    return df
 
-    X = df[
-        [
-            "Age",
-            "Annual Income (k$)",
-            "Spending Score (1-100)"
-        ]
+
+def preprocess_data():
+
+    df = load_data()
+
+    df["Gender"] = df["Gender"].map(
+        {
+            "Male": 1,
+            "Female": 0
+        }
+    )
+
+    features = [
+        "Age",
+        "Annual Income (k$)",
+        "Spending Score (1-100)"
     ]
+
+    X = df[features]
 
     scaler = StandardScaler()
 
     X_scaled = scaler.fit_transform(X)
 
-    os.makedirs("models", exist_ok=True)
+    MODELS_DIR.mkdir(exist_ok=True)
 
     joblib.dump(
         scaler,
-        "models/scaler.pkl"
+        MODELS_DIR / "scaler.pkl"
     )
 
     return df, X_scaled
