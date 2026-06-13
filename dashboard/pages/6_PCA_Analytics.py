@@ -30,6 +30,13 @@ from src.services.analytics_service import (
     get_clustered_data
 )
 
+
+from src.auth_guard import (
+    protect_page
+)
+
+protect_page()
+
 df, X, labels = get_clustered_data()
 
 pca_df = create_pca(

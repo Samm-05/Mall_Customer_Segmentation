@@ -23,6 +23,12 @@ from src.services.report_service import (
     generate_cluster_report
 )
 
+from src.auth_guard import (
+    protect_page
+)
+
+protect_page()
+
 st.title(
     "Business Insights"
 )

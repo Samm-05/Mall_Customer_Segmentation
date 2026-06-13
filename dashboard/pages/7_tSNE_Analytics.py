@@ -22,6 +22,12 @@ from src.advanced_visualizer import (
     tsne_chart
 )
 
+from src.auth_guard import (
+    protect_page
+)
+
+protect_page()
+
 st.title(
     "t-SNE Analytics"
 )

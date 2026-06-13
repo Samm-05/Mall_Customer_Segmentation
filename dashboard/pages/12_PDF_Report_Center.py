@@ -15,6 +15,12 @@ sys.path.append(
 
 import streamlit as st
 
+from src.auth_guard import (
+    protect_page
+)
+
+protect_page()
+
 from src.services.analytics_service import (
     get_clustered_data
 )

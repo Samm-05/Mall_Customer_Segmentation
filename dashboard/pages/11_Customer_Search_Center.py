@@ -18,6 +18,12 @@ from src.services.analytics_service import (
     get_clustered_data
 )
 
+from src.auth_guard import (
+    protect_page
+)
+
+protect_page()
+
 from src.customer_search import (
     search_by_customer_id,
     search_by_cluster,

@@ -29,6 +29,12 @@ st.set_page_config(
     layout="wide"
 )
 
+from src.auth_guard import (
+    protect_page
+)
+
+protect_page()
+
 load_css()
 
 df, X, labels = get_clustered_data()

@@ -24,6 +24,12 @@ from src.visualizer import (
     pca_plot
 )
 
+from src.auth_guard import (
+    protect_page
+)
+
+protect_page()
+
 st.title(
     "Customer Segmentation"
 )

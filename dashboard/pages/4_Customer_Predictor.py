@@ -24,6 +24,12 @@ from src.recommender import (
     get_recommendation
 )
 
+from src.auth_guard import (
+    protect_page
+)
+
+protect_page()
+
 st.title(
     "Customer Segment Predictor"
 )

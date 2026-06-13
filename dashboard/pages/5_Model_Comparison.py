@@ -14,6 +14,12 @@ from src.metrics import (
     evaluate_model
 )
 
+from src.auth_guard import (
+    protect_page
+)
+
+protect_page()
+
 st.title(
     "Model Comparison"
 )
