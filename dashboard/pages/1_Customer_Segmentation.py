@@ -1,18 +1,34 @@
+import sys
+from pathlib import Path
+
+ROOT_DIR = (
+    Path(__file__)
+    .resolve()
+    .parent
+    .parent
+    .parent
+)
+
+sys.path.append(
+    str(ROOT_DIR)
+)
+
 import streamlit as st
 
-from src.train import train_model
+from src.services.analytics_service import (
+    get_clustered_data
+)
+
 from src.visualizer import (
     create_pca_dataframe,
     pca_plot
 )
 
-st.title("Customer Segmentation Dashboard")
-
-df, X, labels = train_model()
-
-st.success(
-    f"Successfully Segmented {len(df)} Customers"
+st.title(
+    "Customer Segmentation"
 )
+
+df, X, labels = get_clustered_data()
 
 pca_df = create_pca_dataframe(
     X,
@@ -26,10 +42,6 @@ fig = pca_plot(
 st.plotly_chart(
     fig,
     use_container_width=True
-)
-
-st.subheader(
-    "Segmented Customers"
 )
 
 st.dataframe(
