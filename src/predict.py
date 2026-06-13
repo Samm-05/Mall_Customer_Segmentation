@@ -1,42 +1,47 @@
 import numpy as np
 import joblib
 
-from config.settings import (
-    MODELS_DIR
-)
-
 
 def predict_customer(
         age,
         income,
-        spending):
+        spending_score):
 
     scaler = joblib.load(
-        MODELS_DIR /
-        "scaler.pkl"
+        "models/scaler.pkl"
     )
 
     model = joblib.load(
-        MODELS_DIR /
-        "kmeans.pkl"
+        "models/kmeans.pkl"
     )
 
     sample = np.array(
-        [
-            [
-                age,
-                income,
-                spending
-            ]
-        ]
+        [[
+            age,
+            income,
+            spending_score
+        ]]
     )
 
-    sample = scaler.transform(
+    sample_scaled = scaler.transform(
         sample
     )
 
-    prediction = model.predict(
-        sample
+    cluster = model.predict(
+        sample_scaled
     )
 
-    return prediction[0]
+    return cluster[0]
+
+
+if __name__ == "__main__":
+
+    result = predict_customer(
+        25,
+        80,
+        90
+    )
+
+    print(
+        f"Cluster : {result}"
+    )

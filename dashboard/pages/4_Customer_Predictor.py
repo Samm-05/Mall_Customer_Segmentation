@@ -1,11 +1,35 @@
+import sys
+from pathlib import Path
+
+ROOT_DIR = (
+    Path(__file__)
+    .resolve()
+    .parent
+    .parent
+    .parent
+)
+
+sys.path.append(
+    str(ROOT_DIR)
+)
+
 import streamlit as st
 
 from src.predict import (
     predict_customer
 )
 
+from src.recommender import (
+    get_cluster_name,
+    get_recommendation
+)
+
 st.title(
-    "Customer Predictor"
+    "Customer Segment Predictor"
+)
+
+st.markdown(
+    "Predict customer segment and generate business recommendations."
 )
 
 age = st.slider(
@@ -16,7 +40,7 @@ age = st.slider(
 )
 
 income = st.slider(
-    "Income",
+    "Annual Income (k$)",
     15,
     150,
     50
@@ -30,7 +54,8 @@ spending = st.slider(
 )
 
 if st.button(
-        "Predict Segment"):
+    "Predict Segment"
+):
 
     cluster = predict_customer(
         age,
@@ -38,6 +63,20 @@ if st.button(
         spending
     )
 
+    segment = get_cluster_name(
+        cluster
+    )
+
+    recommendation = (
+        get_recommendation(
+            cluster
+        )
+    )
+
     st.success(
-        f"Predicted Cluster : {cluster}"
+        f"Predicted Segment: {segment}"
+    )
+
+    st.info(
+        recommendation
     )
