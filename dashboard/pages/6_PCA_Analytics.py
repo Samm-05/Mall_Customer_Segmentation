@@ -26,7 +26,11 @@ st.title(
     "PCA Analytics"
 )
 
-df, X, labels = train_model()
+from src.services.analytics_service import (
+    get_clustered_data
+)
+
+df, X, labels = get_clustered_data()
 
 pca_df = create_pca(
     df,

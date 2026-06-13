@@ -21,7 +21,11 @@ st.title(
     "Report Center"
 )
 
-df, X, labels = train_model()
+from src.services.analytics_service import (
+    get_clustered_data
+)
+
+df, X, labels = get_clustered_data()
 
 csv = df.to_csv(
     index=False

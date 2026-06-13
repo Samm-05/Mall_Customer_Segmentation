@@ -21,7 +21,11 @@ st.title(
     "Executive Insights"
 )
 
-df, X, labels = train_model()
+from src.services.analytics_service import (
+    get_clustered_data
+)
+
+df, X, labels = get_clustered_data()
 
 cluster_counts = (
     df["Cluster"]

@@ -7,7 +7,11 @@ st.title(
     "Cluster Explorer"
 )
 
-df, X, labels = train_model()
+from src.services.analytics_service import (
+    get_clustered_data
+)
+
+df, X, labels = get_clustered_data()
 
 selected_cluster = st.selectbox(
     "Select Cluster",
