@@ -12,8 +12,7 @@
 * **Full Name:** Samyak Prashant Mahatme
 * **No. of Weeks:** 4 Weeks
 * **Project Name:** AI Customer Segmentation & Business Intelligence Platform
-* **Domain:** Machine Learning | Data Analytics | Business Intelligence
-
+* **Domain:** Machine Learning 
 ---
 
 # 📌 Project Overview
