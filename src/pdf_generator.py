@@ -10,8 +10,11 @@ from reportlab.lib.styles import (
     getSampleStyleSheet
 )
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 REPORT_DIR = (
-    Path("reports")
+    BASE_DIR
+    / "reports"
     / "generated_reports"
 )
 
