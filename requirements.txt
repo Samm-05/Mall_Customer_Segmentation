@@ -14,3 +14,5 @@ streamlit-option-menu==0.3.13
 joblib==1.4.2
 
 kaleido==0.2.1
+
+openpyxl
