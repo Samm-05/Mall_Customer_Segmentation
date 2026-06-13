@@ -1,54 +1,49 @@
+import sys
+from pathlib import Path
+
+ROOT_DIR = (
+    Path(__file__)
+    .resolve()
+    .parent
+    .parent
+    .parent
+)
+
+sys.path.append(
+    str(ROOT_DIR)
+)
+
 import streamlit as st
 
-from src.train import train_model
-from src.insights import cluster_summary
+from src.services.analytics_service import (
+    get_clustered_data
+)
+
+from src.services.report_service import (
+    generate_cluster_report
+)
 
 st.title(
     "Business Insights"
 )
 
-df, X, labels = train_model()
+df, X, labels = get_clustered_data()
 
-summary = cluster_summary(df)
-
-st.subheader(
-    "Cluster Statistics"
+report = generate_cluster_report(
+    df
 )
 
 st.dataframe(
-    summary,
+    report,
     use_container_width=True
 )
 
 st.markdown("---")
 
-for cluster in summary.index:
+best_cluster = report[
+    "Spending Score (1-100)"
+].idxmax()
 
-    st.subheader(
-        f"Cluster {cluster}"
-    )
-
-    age = summary.loc[
-        cluster,
-        "Age"
-    ]
-
-    income = summary.loc[
-        cluster,
-        "Annual Income (k$)"
-    ]
-
-    spending = summary.loc[
-        cluster,
-        "Spending Score (1-100)"
-    ]
-
-    st.write(
-        f"""
-        Average Age : {age}
-
-        Average Income : {income}
-
-        Spending Score : {spending}
-        """
-    )
+st.success(
+    f"Highest Spending Segment: Cluster {best_cluster}"
+)
