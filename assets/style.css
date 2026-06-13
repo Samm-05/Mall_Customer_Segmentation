@@ -1,20 +1,90 @@
+/* Main Background */
+.main {
+    background-color: #0E1117;
+}
+
+/* Header */
 .main-header {
-    font-size: 42px;
+    font-size: 48px;
     font-weight: 700;
-    color: #1E88E5;
+    color: #4F8BF9;
+    text-align: center;
     padding-bottom: 10px;
 }
 
-.section-title {
-    font-size: 26px;
-    font-weight: 600;
-    color: #1E88E5;
-    margin-top: 15px;
+/* Subtitle */
+.sub-header {
+    text-align: center;
+    color: #A0AEC0;
+    font-size: 18px;
+    margin-bottom: 20px;
 }
 
-.insight-card {
-    padding: 15px;
-    border-radius: 10px;
-    background-color: rgba(30,136,229,0.1);
+/* KPI Cards */
+.kpi-card {
+    background: linear-gradient(
+        135deg,
+        #1F2937,
+        #111827
+    );
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+    text-align: center;
+
+    box-shadow:
+        0px 4px 20px
+        rgba(0,0,0,0.4);
+
     margin-bottom: 10px;
+}
+
+.kpi-title {
+    font-size: 16px;
+    color: #9CA3AF;
+}
+
+.kpi-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Sections */
+
+.section-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #4F8BF9;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+/* Insights */
+
+.insight-card {
+
+    background-color:
+    rgba(
+        79,
+        139,
+        249,
+        0.15
+    );
+
+    padding: 15px;
+
+    border-radius: 10px;
+
+    margin-bottom: 10px;
+}
+
+/* Sidebar */
+
+section[data-testid="stSidebar"] {
+
+    background-color:
+    #111827;
 }
